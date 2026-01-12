@@ -237,30 +237,10 @@ Contributions are welcome! Here's how you can help:
 
 ---
 
-## Known Issues
+## Limitation
 
-- Settings window may appear narrow when opened from bookmark bar *(Fixed in v2.0.2)*
 - Real-time sync delay of up to 2 seconds between tabs
 - Chart limited to top 5 conversations
-
----
-
-## Roadmap
-
-### v2.1.0 (Planned)
-- [ ] Export data functionality (CSV/JSON)
-- [ ] Weekly usage summary notifications
-- [ ] Historical trend charts
-
-### v2.2.0 (Future)
-- [ ] Carbon footprint estimates
-- [ ] Badge customization options
-- [ ] Multi-language support
-
-### v3.0.0 (Ideas)
-- [ ] Support for Claude, Gemini, and other AI platforms
-- [ ] Anonymous usage comparisons
-- [ ] Browser sync across devices
 
 ---
 
@@ -299,17 +279,47 @@ This project is licensed under the **MIT License** - see the LICENSE file for de
 - Data center efficiency studies
 - The open-source community
 
----
+## Research Sources for WaterWise
 
-## Support
+  1. University of California, Riverside (2023) - "Making AI Less Thirsty"
 
-Found a bug or have a feature request?
+  - Study: Water consumption in AI training and inference
+  - URL: https://arxiv.org/abs/2304.03271
+  - Title: "Making AI Less 'Thirsty': Uncovering and Addressing the Secret Water Footprint of AI Models"
+  - Authors: Pengfei Li, Jianyi Yang, Mohammad A. Islam, Shaolei Ren
 
-- **Issues**: [Open an issue](https://github.com/yourusername/waterwise/issues)
-- **Discussions**: [Start a discussion](https://github.com/yourusername/waterwise/discussions)
-- **Email**: your.email@example.com
+  2. OpenAI Infrastructure Reports (2024)
 
----
+  - Report: GPT-4 operational costs including water usage
+  - URL: https://openai.com/research (general research page)
+  - Note: Specific water usage data is often referenced in third-party analyses
+
+  3. Data Center Efficiency Studies
+
+  - Uptime Institute - WUE Metrics:
+    - URL: https://uptimeinstitute.com/resources/research-and-reports
+  - Google Data Center Efficiency:
+    - URL: https://www.google.com/about/datacenters/efficiency/
+
+  4. Google Sustainability Reports
+
+  - Environmental Report 2024:
+    - URL: https://sustainability.google/reports/
+  - Data Center Water Stewardship:
+    - URL: https://www.google.com/about/datacenters/efficiency/
+
+  5. Microsoft Sustainability Reports
+
+  - Environmental Sustainability Report:
+    - URL: https://www.microsoft.com/en-us/sustainability/reports
+  - AI Water Footprint Data:
+    - URL: https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RW15mgm
+
+  6. Additional Research
+
+  - The Washington Post - ChatGPT Water Usage:
+    - URL: https://www.washingtonpost.com/technology/2023/09/18/chatgpt-ai-water-use/
+  - Associated Press - AI Water Consumption:
 
 **Made with 💧 for sustainability awareness**
 
