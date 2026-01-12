@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WaterWise - Settings</title>
+  <link rel="stylesheet" href="settings.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <button id="backButton" class="back-btn">← Back</button>
+      <div class="header-content">
+        <h1>⚙️ Settings</h1>
+        <p class="subtitle">Configure WaterWise</p>
+      </div>
+    </header>
+
+    <section class="settings-section">
+      <h2>Display Options</h2>
+
+      <div class="setting-card">
+        <div class="setting-header">
+          <h3>Floating Button</h3>
+        </div>
+
+        <div class="setting-control">
+          <label for="showFloatButton" style="display: flex; align-items: center; justify-content: space-between; cursor: pointer;">
+            <span>
+              Show floating button on ChatGPT
+              <span class="label-hint" style="display: block; margin-top: 4px;">Display a button in the bottom-left corner to quickly access WaterWise</span>
+            </span>
+            <input
+              type="checkbox"
+              id="showFloatButton"
+              style="width: 20px; height: 20px; cursor: pointer;"
+              checked
+            >
+          </label>
+        </div>
+      </div>
+
+      <h2>Water Usage Calculation</h2>
+
+      <div class="info-card">
+        <div class="info-header">
+          <span class="info-icon">ℹ️</span>
+          <h3>How We Calculate Water Usage</h3>
+        </div>
+        <div class="info-content">
+          <p>WaterWise estimates water consumption based on the length of ChatGPT responses and research from 2024-2025 studies.</p>
+
+          <h4>Research-Based Estimates:</h4>
+          <ul>
+            <li><strong>GPT-3:</strong> ~500ml per 10-50 responses (10-50ml per response)</li>
+            <li><strong>GPT-4:</strong> ~519ml per 100-word response</li>
+            <li><strong>GPT-4o:</strong> ~2.3-39ml per medium response (150-200 words)</li>
+            <li><strong>2025 Models:</strong> As low as 0.26ml per query</li>
+          </ul>
+
+          <h4>Why Such Variation?</h4>
+          <p>Water consumption varies significantly based on:</p>
+          <ul>
+            <li><strong>Data center location:</strong> Hot climates need more cooling</li>
+            <li><strong>Cooling technology:</strong> Some systems are 10-25x more efficient</li>
+            <li><strong>Model size:</strong> Larger models consume more resources</li>
+            <li><strong>Season:</strong> Summer requires more cooling than winter</li>
+            <li><strong>Infrastructure:</strong> Newer data centers are more water-efficient</li>
+          </ul>
+
+          <h4>Our Approach:</h4>
+          <p>We use a <strong>conservative mid-range estimate</strong> to balance accuracy with awareness:</p>
+          <ul>
+            <li>Default: <strong>15ml per 100 words</strong></li>
+            <li>This accounts for modern efficiency improvements</li>
+            <li>Considers average data center conditions</li>
+            <li>You can customize this below based on your preference</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="setting-card">
+        <div class="setting-header">
+          <h3>Customize Water Estimate</h3>
+          <div class="preset-badges">
+            <span class="badge" data-preset="conservative">Conservative</span>
+            <span class="badge badge-active" data-preset="balanced">Balanced</span>
+            <span class="badge" data-preset="optimistic">Optimistic</span>
+          </div>
+        </div>
+
+        <div class="setting-control">
+          <label for="mlPerWord">
+            Milliliters per Word
+            <span class="label-hint">(Default: 0.15ml = 15ml per 100 words)</span>
+          </label>
+          <div class="input-group">
+            <input
+              type="number"
+              id="mlPerWord"
+              min="0.01"
+              max="1.0"
+              step="0.01"
+              value="0.15"
+            >
+            <span class="input-suffix">ml/word</span>
+          </div>
+          <div class="range-display">
+            <span id="rangeDisplay">= 15ml per 100 words</span>
+          </div>
+        </div>
+
+        <div class="preset-info">
+          <div class="preset-option">
+            <strong>Conservative (0.25ml):</strong> Assumes older infrastructure and worst-case scenarios (~25ml per 100 words)
+          </div>
+          <div class="preset-option">
+            <strong>Balanced (0.15ml):</strong> Mid-range estimate for modern systems (~15ml per 100 words)
+          </div>
+          <div class="preset-option">
+            <strong>Optimistic (0.08ml):</strong> Assumes latest efficient systems (~8ml per 100 words)
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button id="saveButton" class="btn-primary">Save Settings</button>
+          <button id="resetButton" class="btn-secondary">Reset to Default</button>
+        </div>
+
+        <div id="saveMessage" class="save-message"></div>
+      </div>
+    </section>
+
+    <section class="research-section">
+      <h2>Research Sources</h2>
+      <div class="research-card">
+        <h4>Key Studies & Reports</h4>
+        <ul>
+          <li>
+            <strong>University of California, Riverside (2023):</strong>
+            "Making AI Less Thirsty" - Study on water consumption in AI training and inference
+          </li>
+          <li>
+            <strong>OpenAI Infrastructure Reports (2024):</strong>
+            Analysis of GPT-4 operational costs including water usage
+          </li>
+          <li>
+            <strong>Data Center Efficiency Studies (2024-2025):</strong>
+            Industry reports on PUE (Power Usage Effectiveness) and WUE (Water Usage Effectiveness)
+          </li>
+          <li>
+            <strong>Google & Microsoft Sustainability Reports:</strong>
+            Published water consumption metrics for cloud AI services
+          </li>
+        </ul>
+
+        <p class="research-note">
+          <strong>Note:</strong> These are estimates based on available research. Actual consumption
+          varies by provider, location, and specific model configurations. WaterWise aims to raise
+          awareness about the environmental impact of AI usage.
+        </p>
+      </div>
+    </section>
+
+    <footer>
+      <div class="footer-info">
+        WaterWise v1.0.0 • Made with 💧 for sustainability awareness
+      </div>
+    </footer>
+  </div>
+
+  <script src="settings.js"></script>
+</body>
+</html>

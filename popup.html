@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WaterWise - ChatGPT Water Usage</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="header-content">
+        <h1>💧 WaterWise</h1>
+        <p class="subtitle">ChatGPT Water Usage Tracker</p>
+      </div>
+      <button id="settingsButton" class="settings-btn" title="Settings">⚙️</button>
+    </header>
+
+    <section class="stats-overview">
+      <div class="stat-card total">
+        <div class="stat-icon">🌊</div>
+        <div class="stat-content">
+          <div class="stat-label">Total Water Used</div>
+          <div class="stat-value" id="totalWater">0L</div>
+        </div>
+      </div>
+
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="stat-label">Active Chats</div>
+          <div class="stat-value" id="chatCount">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Total Messages</div>
+          <div class="stat-value" id="messageCount">0</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="visualization">
+      <h2>Water Consumption</h2>
+      <div class="chart-container">
+        <canvas id="waterChart"></canvas>
+      </div>
+      <div class="comparison">
+        <div id="comparisonText">Analyzing water usage...</div>
+      </div>
+    </section>
+
+    <section class="chat-list">
+      <h2>Recent Conversations</h2>
+      <div id="chatListContainer">
+        <div class="empty-state">
+          <div class="empty-icon">💬</div>
+          <p>No conversations tracked yet</p>
+          <p class="empty-hint">Start chatting on ChatGPT to see water usage data</p>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="footer-buttons">
+        <button id="clearData" class="btn-secondary">Clear Data</button>
+      </div>
+      <div class="info-text" id="infoText">
+        Based on research: ~15ml per 100 words
+      </div>
+    </footer>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+{
+  "name": "waterwise-chatgpt-tracker",
+  "version": "1.0.0",
+  "description": "Chrome extension that estimates water usage for ChatGPT responses",
+  "scripts": {
+    "generate-icons": "node generate-icons.js"
+  },
+  "keywords": [
+    "chrome-extension",
+    "chatgpt",
+    "water-usage",
+    "sustainability"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "canvas": "^2.11.2"
+  }
+}
