@@ -44,7 +44,7 @@ Raise awareness about the environmental impact of AI usage while tracking your C
 
 1. Clone or download this repository:
    ```bash
-   git clone https://github.com/yourusername/waterwise.git
+   git clone https://github.com/momchilgeorgiev/waterwise.git
    cd waterwise
    ```
 
