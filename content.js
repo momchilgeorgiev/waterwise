@@ -114,7 +114,12 @@ async function saveMessageWaterUsage(chatId, messageId, waterUsed) {
         }
 
         // Store water usage for this specific message
-        chatMessages[chatId][messageId] = waterUsed;
+        const existingEntry = chatMessages[chatId][messageId];
+        const existingTimestamp = existingEntry && typeof existingEntry === 'object'
+          ? existingEntry.timestamp
+          : null;
+        const timestamp = typeof existingTimestamp === 'number' ? existingTimestamp : Date.now();
+        chatMessages[chatId][messageId] = { waterUsed, timestamp };
 
         console.log(`WaterWise: Saving message ${messageId} = ${waterUsed.toFixed(4)}L to storage`);
 
@@ -139,7 +144,10 @@ async function recalculateChatTotal(chatId) {
       const chats = result.chats || {};
 
       const messages = chatMessages[chatId] || {};
-      const totalWaterForChat = Object.values(messages).reduce((sum, water) => sum + water, 0);
+      const totalWaterForChat = Object.values(messages).reduce((sum, entry) => {
+        const waterValue = typeof entry === 'number' ? entry : entry?.waterUsed;
+        return sum + (typeof waterValue === 'number' ? waterValue : 0);
+      }, 0);
       const messageCount = Object.keys(messages).length;
 
       console.log(`WaterWise: Recalculating chat ${chatId}:`);

@@ -121,7 +121,66 @@
             <strong>Optimistic (0.08ml):</strong> Assumes latest efficient systems (~8ml per 100 words)
           </div>
         </div>
+      </div>
 
+      <h2>Usage Limits</h2>
+
+      <div class="setting-card">
+        <div class="setting-header">
+          <h3>Personal Water Goals</h3>
+          <span class="optional-badge">Optional</span>
+        </div>
+
+        <p class="setting-description">
+          Set weekly, monthly, or yearly limits to track your progress in the popup. Leave any field blank to disable a limit.
+        </p>
+
+        <div class="setting-control">
+          <label for="weeklyLimit">Weekly limit</label>
+          <div class="input-group">
+            <input
+              type="number"
+              id="weeklyLimit"
+              min="0.1"
+              step="0.1"
+              placeholder="e.g. 2.5"
+            >
+            <span class="input-suffix">L</span>
+          </div>
+        </div>
+
+        <div class="setting-control">
+          <label for="monthlyLimit">Monthly limit</label>
+          <div class="input-group">
+            <input
+              type="number"
+              id="monthlyLimit"
+              min="0.5"
+              step="0.5"
+              placeholder="e.g. 10"
+            >
+            <span class="input-suffix">L</span>
+          </div>
+        </div>
+
+        <div class="setting-control">
+          <label for="yearlyLimit">Yearly limit</label>
+          <div class="input-group">
+            <input
+              type="number"
+              id="yearlyLimit"
+              min="1"
+              step="1"
+              placeholder="e.g. 120"
+            >
+            <span class="input-suffix">L</span>
+          </div>
+        </div>
+
+        <div class="limit-helper">Tip: Use decimal values for smaller goals (for example 1.5L).</div>
+      </div>
+
+      <div class="settings-actions">
         <div class="button-group">
           <button id="saveButton" class="btn-primary">Save Settings</button>
           <button id="resetButton" class="btn-secondary">Reset to Default</button>

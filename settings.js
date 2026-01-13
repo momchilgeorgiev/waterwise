@@ -4,6 +4,11 @@
  */
 
 const DEFAULT_ML_PER_WORD = 0.15;
+const DEFAULT_USAGE_LIMITS = {
+  weekly: null,
+  monthly: null,
+  yearly: null
+};
 
 const PRESETS = {
   conservative: 0.25,  // 25ml per 100 words
@@ -15,7 +20,7 @@ const PRESETS = {
  * Loads saved settings from storage
  */
 function loadSettings() {
-  chrome.storage.local.get(['mlPerWord', 'showFloatButton'], (result) => {
+  chrome.storage.local.get(['mlPerWord', 'showFloatButton', 'usageLimits'], (result) => {
     const mlPerWord = result.mlPerWord || DEFAULT_ML_PER_WORD;
     document.getElementById('mlPerWord').value = mlPerWord;
     updateRangeDisplay(mlPerWord);
@@ -24,6 +29,11 @@ function loadSettings() {
     // Load float button setting (defaults to true)
     const showFloatButton = result.showFloatButton !== undefined ? result.showFloatButton : true;
     document.getElementById('showFloatButton').checked = showFloatButton;
+
+    const usageLimits = result.usageLimits || DEFAULT_USAGE_LIMITS;
+    setLimitValue('weeklyLimit', usageLimits.weekly);
+    setLimitValue('monthlyLimit', usageLimits.monthly);
+    setLimitValue('yearlyLimit', usageLimits.yearly);
   });
 }
 
@@ -59,6 +69,7 @@ function updateActiveBadge(mlPerWord) {
 function saveSettings() {
   const mlPerWord = parseFloat(document.getElementById('mlPerWord').value);
   const showFloatButton = document.getElementById('showFloatButton').checked;
+  const validationErrors = [];
 
   // Validate input
   if (isNaN(mlPerWord) || mlPerWord < 0.01 || mlPerWord > 1.0) {
@@ -66,7 +77,22 @@ function saveSettings() {
     return;
   }
 
-  chrome.storage.local.set({ mlPerWord, showFloatButton }, () => {
+  const weeklyLimit = parseOptionalLimit('weeklyLimit', 'Weekly', validationErrors);
+  const monthlyLimit = parseOptionalLimit('monthlyLimit', 'Monthly', validationErrors);
+  const yearlyLimit = parseOptionalLimit('yearlyLimit', 'Yearly', validationErrors);
+
+  if (validationErrors.length > 0) {
+    showMessage(validationErrors[0], 'error');
+    return;
+  }
+
+  const usageLimits = {
+    weekly: weeklyLimit,
+    monthly: monthlyLimit,
+    yearly: yearlyLimit
+  };
+
+  chrome.storage.local.set({ mlPerWord, showFloatButton, usageLimits }, () => {
     showMessage('Settings saved successfully! 💧', 'success');
     updateRangeDisplay(mlPerWord);
     updateActiveBadge(mlPerWord);
@@ -79,8 +105,15 @@ function saveSettings() {
 function resetSettings() {
   document.getElementById('mlPerWord').value = DEFAULT_ML_PER_WORD;
   document.getElementById('showFloatButton').checked = true;
-  chrome.storage.local.set({ mlPerWord: DEFAULT_ML_PER_WORD, showFloatButton: true }, () => {
-    showMessage('Reset to default (0.15ml/word)', 'success');
+  setLimitValue('weeklyLimit', DEFAULT_USAGE_LIMITS.weekly);
+  setLimitValue('monthlyLimit', DEFAULT_USAGE_LIMITS.monthly);
+  setLimitValue('yearlyLimit', DEFAULT_USAGE_LIMITS.yearly);
+  chrome.storage.local.set({
+    mlPerWord: DEFAULT_ML_PER_WORD,
+    showFloatButton: true,
+    usageLimits: DEFAULT_USAGE_LIMITS
+  }, () => {
+    showMessage('Reset to defaults and cleared usage limits', 'success');
     updateRangeDisplay(DEFAULT_ML_PER_WORD);
     updateActiveBadge(DEFAULT_ML_PER_WORD);
   });
@@ -109,6 +142,31 @@ function applyPreset(preset) {
     updateRangeDisplay(value);
     updateActiveBadge(value);
   }
+}
+
+/**
+ * Sets a numeric limit input value (optional)
+ */
+function setLimitValue(inputId, value) {
+  const input = document.getElementById(inputId);
+  if (!input) return;
+  input.value = typeof value === 'number' ? value : '';
+}
+
+/**
+ * Parses optional limit values with validation
+ */
+function parseOptionalLimit(inputId, label, errors) {
+  const input = document.getElementById(inputId);
+  if (!input) return null;
+  const raw = input.value.trim();
+  if (!raw) return null;
+  const parsed = parseFloat(raw);
+  if (isNaN(parsed) || parsed <= 0) {
+    errors.push(`${label} limit must be a positive number`);
+    return null;
+  }
+  return parsed;
 }
 
 /**

@@ -56,6 +56,117 @@ function formatRelativeTime(timestamp) {
 }
 
 /**
+ * Gets the start of the current week (Monday)
+ */
+function getStartOfWeek(date) {
+  const start = new Date(date);
+  start.setHours(0, 0, 0, 0);
+  const day = start.getDay();
+  const diff = (day + 6) % 7;
+  start.setDate(start.getDate() - diff);
+  return start;
+}
+
+/**
+ * Gets the start of the current month
+ */
+function getStartOfMonth(date) {
+  return new Date(date.getFullYear(), date.getMonth(), 1);
+}
+
+/**
+ * Gets the start of the current year
+ */
+function getStartOfYear(date) {
+  return new Date(date.getFullYear(), 0, 1);
+}
+
+/**
+ * Normalizes stored message data with optional timestamp fallback
+ */
+function normalizeMessageEntry(entry, fallbackTimestamp) {
+  if (typeof entry === 'number') {
+    return {
+      waterUsed: entry,
+      timestamp: typeof fallbackTimestamp === 'number' ? fallbackTimestamp : null
+    };
+  }
+
+  if (entry && typeof entry === 'object') {
+    const waterUsed = typeof entry.waterUsed === 'number' ? entry.waterUsed : 0;
+    const timestamp = typeof entry.timestamp === 'number'
+      ? entry.timestamp
+      : (typeof fallbackTimestamp === 'number' ? fallbackTimestamp : null);
+
+    return { waterUsed, timestamp };
+  }
+
+  return { waterUsed: 0, timestamp: null };
+}
+
+/**
+ * Calculates water usage for week/month/year based on message timestamps
+ */
+function calculateUsageTotals(chatMessages, chats) {
+  const now = new Date();
+  const weekStart = getStartOfWeek(now).getTime();
+  const monthStart = getStartOfMonth(now).getTime();
+  const yearStart = getStartOfYear(now).getTime();
+  const totals = { week: 0, month: 0, year: 0 };
+
+  Object.entries(chatMessages).forEach(([chatId, messages]) => {
+    const fallbackTimestamp = chats[chatId]?.lastUpdated;
+    Object.values(messages || {}).forEach((entry) => {
+      const { waterUsed, timestamp } = normalizeMessageEntry(entry, fallbackTimestamp);
+      if (!waterUsed || typeof timestamp !== 'number') return;
+
+      if (timestamp >= yearStart) totals.year += waterUsed;
+      if (timestamp >= monthStart) totals.month += waterUsed;
+      if (timestamp >= weekStart) totals.week += waterUsed;
+    });
+  });
+
+  return totals;
+}
+
+/**
+ * Updates a single usage limit card
+ */
+function updateUsageLimitCard(periodKey, usage, limit) {
+  const usageEl = document.getElementById(`${periodKey}Usage`);
+  const limitEl = document.getElementById(`${periodKey}Limit`);
+  const progressEl = document.getElementById(`${periodKey}Progress`);
+  const metaEl = document.getElementById(`${periodKey}Meta`);
+
+  if (!usageEl || !limitEl || !progressEl || !metaEl) return;
+
+  usageEl.textContent = formatWater(usage);
+
+  const normalizedLimit = typeof limit === 'number' && limit > 0 ? limit : null;
+  const periodLabel = {
+    week: 'weekly',
+    month: 'monthly',
+    year: 'yearly'
+  }[periodKey] || 'custom';
+
+  if (!normalizedLimit) {
+    limitEl.textContent = 'No limit set';
+    limitEl.classList.add('muted');
+    progressEl.style.width = '0%';
+    progressEl.classList.remove('over');
+    metaEl.textContent = `Used ${formatWater(usage)} so far - Set a ${periodLabel} limit in settings`;
+    return;
+  }
+
+  const percent = (usage / normalizedLimit) * 100;
+  limitEl.textContent = `Limit: ${formatWater(normalizedLimit)}`;
+  limitEl.classList.remove('muted');
+  progressEl.style.width = `${Math.min(percent, 100)}%`;
+  progressEl.classList.toggle('over', usage > normalizedLimit);
+  metaEl.textContent = `${formatWater(usage)} of ${formatWater(normalizedLimit)} (${Math.round(percent)}%)`;
+}
+
+/**
  * Creates a simple bar chart using canvas
  */
 function createChart(chatData) {
@@ -157,11 +268,12 @@ function renderChatList(chats) {
  * Updates all stats and visualizations
  */
 function updateStats() {
-  chrome.storage.local.get(['chats', 'totalWater', 'mlPerWord', 'chatMessages'], (result) => {
+  chrome.storage.local.get(['chats', 'totalWater', 'mlPerWord', 'chatMessages', 'usageLimits'], (result) => {
     const chats = result.chats || {};
     const totalWater = result.totalWater || 0;
     const mlPerWord = result.mlPerWord || 0.15;
     const chatMessages = result.chatMessages || {};
+    const usageLimits = result.usageLimits || {};
     const chatArray = Object.values(chats);
 
     console.log('WaterWise Popup: Storage data:', {
@@ -184,6 +296,12 @@ function updateStats() {
     // Update info text with current setting
     const mlPer100Words = (mlPerWord * 100).toFixed(1);
     document.getElementById('infoText').textContent = `Based on your setting: ~${mlPer100Words}ml per 100 words`;
+
+    // Update usage limit cards
+    const usageTotals = calculateUsageTotals(chatMessages, chats);
+    updateUsageLimitCard('week', usageTotals.week, usageLimits.weekly);
+    updateUsageLimitCard('month', usageTotals.month, usageLimits.monthly);
+    updateUsageLimitCard('year', usageTotals.year, usageLimits.yearly);
 
     // Update chart
     createChart(chatArray);
@@ -258,7 +376,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Listen for storage changes (real-time updates)
   chrome.storage.onChanged.addListener((changes, area) => {
-    if (area === 'local' && (changes.chats || changes.totalWater || changes.chatMessages)) {
+    if (area === 'local' && (changes.chats || changes.totalWater || changes.chatMessages || changes.mlPerWord || changes.usageLimits)) {
       console.log('WaterWise Popup: Storage changed, updating stats');
       updateStats();
     }

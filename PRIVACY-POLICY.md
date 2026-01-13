@@ -162,7 +162,11 @@ We may update this Privacy Policy from time to time. When we do:
 
 - The "Last Updated" date at the top will be revised
 - Significant changes will be noted in extension update notes
-- Continued use of the extension constitutes acceptance of change
+- Continued use of the extension constitutes acceptance of changes
+
+You can always review the latest version at:
+- **GitHub**: [https://github.com/yourusername/waterwise/blob/main/PRIVACY-POLICY.md](https://github.com/yourusername/waterwise/blob/main/PRIVACY-POLICY.md)
+- **Extension Store Listing**: Chrome Web Store item page
 
 ---
 
@@ -175,7 +179,9 @@ WaterWise is open-source software. You can:
 - ✅ Verify that no data is transmitted externally
 - ✅ Contribute improvements or report issues
 - ✅ Fork and modify for personal use
-  
+
+**GitHub Repository**: [https://github.com/yourusername/waterwise](https://github.com/yourusername/waterwise)
+
 ---
 
 ## Legal Compliance
@@ -188,6 +194,18 @@ WaterWise complies with:
 - ✅ California Consumer Privacy Act (CCPA) principles
 
 Since we do not collect personal data, most data protection regulations do not apply, but we follow best practices regardless.
+
+---
+
+## Contact Information
+
+If you have questions or concerns about this Privacy Policy or WaterWise's data practices:
+
+- **GitHub Issues**: [https://github.com/yourusername/waterwise/issues](https://github.com/yourusername/waterwise/issues)
+- **Email**: your.email@example.com
+- **Chrome Web Store**: Use "Report abuse" or "Support" on the extension listing page
+
+We will respond to privacy inquiries within 7 business days.
 
 ---
 

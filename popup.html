@@ -47,6 +47,53 @@
       </div>
     </section>
 
+    <section class="usage-limits">
+      <h2>Usage Limits</h2>
+      <div class="limit-grid">
+        <div class="limit-card">
+          <div class="limit-header">
+            <div>
+              <div class="limit-title">This Week</div>
+              <div class="limit-value" id="weekUsage">0L</div>
+            </div>
+            <div class="limit-target" id="weekLimit">No limit set</div>
+          </div>
+          <div class="limit-track">
+            <div class="limit-progress week" id="weekProgress"></div>
+          </div>
+          <div class="limit-meta" id="weekMeta">Set a weekly limit in settings</div>
+        </div>
+
+        <div class="limit-card">
+          <div class="limit-header">
+            <div>
+              <div class="limit-title">This Month</div>
+              <div class="limit-value" id="monthUsage">0L</div>
+            </div>
+            <div class="limit-target" id="monthLimit">No limit set</div>
+          </div>
+          <div class="limit-track">
+            <div class="limit-progress month" id="monthProgress"></div>
+          </div>
+          <div class="limit-meta" id="monthMeta">Set a monthly limit in settings</div>
+        </div>
+
+        <div class="limit-card">
+          <div class="limit-header">
+            <div>
+              <div class="limit-title">This Year</div>
+              <div class="limit-value" id="yearUsage">0L</div>
+            </div>
+            <div class="limit-target" id="yearLimit">No limit set</div>
+          </div>
+          <div class="limit-track">
+            <div class="limit-progress year" id="yearProgress"></div>
+          </div>
+          <div class="limit-meta" id="yearMeta">Set a yearly limit in settings</div>
+        </div>
+      </div>
+    </section>
+
     <section class="chat-list">
       <h2>Recent Conversations</h2>
       <div id="chatListContainer">
