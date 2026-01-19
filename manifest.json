@@ -1,11 +1,10 @@
 {
   "manifest_version": 3,
   "name": "WaterWise - ChatGPT Water Usage Tracker",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "Estimates and visualizes water usage for ChatGPT conversations",
   "permissions": [
-    "storage",
-    "activeTab"
+    "storage"
   ],
   "background": {
     "service_worker": "background.js"

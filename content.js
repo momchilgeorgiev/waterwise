@@ -44,7 +44,9 @@ function getChatId() {
  */
 function estimateWaterUsage(text) {
   const words = text.split(/\s+/).filter(w => w.length > 0).length;
-  const ml = words * mlPerWord;
+  // Ensure mlPerWord is a valid number, default to 0.15 if not
+  const validMlPerWord = (typeof mlPerWord === 'number' && !isNaN(mlPerWord)) ? mlPerWord : 0.15;
+  const ml = words * validMlPerWord;
   return ml / 1000; // Convert to liters
 }
 
@@ -104,6 +106,9 @@ let saveQueue = Promise.resolve();
  * Saves water usage for a specific message (queued to prevent race conditions)
  */
 async function saveMessageWaterUsage(chatId, messageId, waterUsed) {
+  // Validate waterUsed is a valid number, default to 0 if NaN
+  const validWaterUsed = (typeof waterUsed === 'number' && !isNaN(waterUsed)) ? waterUsed : 0;
+
   // Add to queue to prevent concurrent writes
   saveQueue = saveQueue.then(() => {
     return new Promise((resolve) => {
@@ -119,9 +124,9 @@ async function saveMessageWaterUsage(chatId, messageId, waterUsed) {
           ? existingEntry.timestamp
           : null;
         const timestamp = typeof existingTimestamp === 'number' ? existingTimestamp : Date.now();
-        chatMessages[chatId][messageId] = { waterUsed, timestamp };
+        chatMessages[chatId][messageId] = { waterUsed: validWaterUsed, timestamp };
 
-        console.log(`WaterWise: Saving message ${messageId} = ${waterUsed.toFixed(4)}L to storage`);
+        console.log(`WaterWise: Saving message ${messageId} = ${validWaterUsed.toFixed(4)}L to storage`);
 
         chrome.storage.local.set({ chatMessages }, () => {
           console.log(`WaterWise: Saved! chatMessages[${chatId}] now has ${Object.keys(chatMessages[chatId]).length} messages`);
@@ -208,7 +213,9 @@ async function addWaterBadge(messageElement) {
   // Calculate water usage
   const waterUsed = estimateWaterUsage(text);
 
-  console.log(`WaterWise: Message ${messageId} - Text length: ${text.length} chars, ${text.split(/\s+/).length} words, ${waterUsed.toFixed(4)}L`);
+  // Safely log water usage (handle potential NaN)
+  const waterDisplay = isNaN(waterUsed) ? 'NaN' : `${waterUsed.toFixed(4)}L`;
+  console.log(`WaterWise: Message ${messageId} - Text length: ${text.length} chars, ${text.split(/\s+/).length} words, ${waterDisplay}`);
 
   // Check if we've already stored this message
   const chatMessages = await getChatMessages(chatId);
